@@ -6,8 +6,12 @@ Make sure you've the module pycodestyle (pip install pycodestyle) Then enable th
 `pip install pycodestyle_magic`
 
 first load the magic in a cell:
+
 `%load_ext pycodestyle_magic`
 
+
 and then use the function in your cell to check compliance with pycodestyle
+
 `%%pycodestyle`
+
 
