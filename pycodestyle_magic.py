@@ -51,7 +51,7 @@ def pycodestyle(line, cell):
     # store code in a file, todo unicode
     with tempfile.NamedTemporaryFile(mode='r+',delete=False) as f:
         # save to file
-        f.write(cell + '\n')
+        f.write('# The %%pycodestyle cell magic was here\n' + cell + '\n')
         # make sure it's written
         f.flush()
         f.close()
