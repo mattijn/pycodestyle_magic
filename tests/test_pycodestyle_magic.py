@@ -44,11 +44,11 @@ class TestLinenumbers(unittest.TestCase):
         """Test that pycodestyle still reports if there are too many empty
         lines at the beginning of the cell.
         """
-        cell = '''\n\nprint("this is fine")'''
+        cell = '''\n\n\nprint("this is fine")'''
         with self.assertLogs(self.logger) as cm:
             pycodestyle(None, cell)
             self.assertEqual(cm.output,
-                             [f"{self.level}:{self.logger.name}:4:1: E303 too many blank lines (3)"])
+                             [f"{self.level}:{self.logger.name}:5:1: E303 too many blank lines (3)"])
 
 # def test_pycodestyle_leading_comments_skipped_when_everything_is_fine(self):
 #        """Test that leading comment lines is skipped when pycodestyle doesn't
