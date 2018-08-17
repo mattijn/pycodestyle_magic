@@ -13,7 +13,8 @@ import io
 import os
 import logging
 import pycodestyle as pycodestyle_module
-
+from flake8.api import legacy as flake8_module
+from contextlib import redirect_stdout
 
 from IPython.core.magic import register_cell_magic
 
@@ -71,4 +72,29 @@ def pycodestyle(line, cell):
         os.remove(f.name)
     except OSError as e:  ## if failed, report it back to the user ##
         logger.error("Error: %s - %s." % (e.filename,e.strerror))
+    return
+
+@register_cell_magic
+def flake8(line, cell):
+    """flake8 cell magic"""
+
+    logger.setLevel(logging.INFO)
+    with tempfile.NamedTemporaryFile(mode='r+', delete=False) as f:
+        # save to file
+        f.write(cell + '\n')
+        # make sure it's written
+        f.flush()
+        f.close()
+
+    flake = flake8_module.get_style_guide(ignore=['W931'])
+    with io.StringIO() as buf, redirect_stdout(buf):
+        _ = flake.check_files([f.name])
+        for line in buf.getvalue().splitlines():
+            temp_file, line, col, error = line.split(':')
+            logger.info(f'L{line}C{col}: {error}')
+
+    try:
+        os.remove(f.name)
+    except OSError as e:  # if failed, report it back to the user
+        logger.error("Error: %s - %s." % (e.filename, e.strerror))
     return
