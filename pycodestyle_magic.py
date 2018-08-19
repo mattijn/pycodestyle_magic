@@ -1,6 +1,6 @@
 """
-magic function that checks a cell for pep8 compliance
-%%pep8
+magic function that checks a cell for pep8 compliance, using pycodestyle
+%%pycodestyle
 a=1
 should give an error about missing spaces
 """
