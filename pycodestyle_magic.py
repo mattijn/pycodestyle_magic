@@ -5,7 +5,7 @@ a=1
 should give an error about missing spaces
 """
 
-__version__ = '0.1'
+__version__ = '0.2.2'
 
 import sys
 import tempfile
@@ -87,14 +87,26 @@ def flake8(line, cell):
         f.close()
 
     flake = flake8_module.get_style_guide(ignore=['W931'])
+    # flake_result = flake.check_files([f.name])
+    
+    # # split lines
+    # stdout = sys.stdout.getvalue().splitlines()    
+    # for line in stdout:
+        # logger.info(line)
+    # # sys.stdout = old_stdout    
+    
+    
     with io.StringIO() as buf, redirect_stdout(buf):
         _ = flake.check_files([f.name])
         for line in buf.getvalue().splitlines():
-            temp_file, line, col, error = line.split(':')
-            logger.info(f'L{line}C{col}: {error}')
+            print(line)#import pdb; pdb.set_trace()
+            # on windows drive path also contains :
+            temp_file, line, col, error = line.split(':')[-4:] 
+            # add + 1 for line as first line is %%flake8, inc pre py3.6 string
+            logger.info('{}:{}:{}'.format(int(line)+1, col, error))  
 
-    try:
-        os.remove(f.name)
-    except OSError as e:  # if failed, report it back to the user
-        logger.error("Error: %s - %s." % (e.filename, e.strerror))
+    # try:
+        # os.remove(f.name)
+    # except OSError as e:  # if failed, report it back to the user
+        # logger.error("Error: %s - %s." % (e.filename, e.strerror))
     return
