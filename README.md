@@ -1,7 +1,7 @@
 # pycodestyle_magic
 magic function for pycodestyle module in jupyter notebook
 
-Make sure you've the module pycodestyle and flake8 (`pip install pycodestyle, flake8`) Then enable the magic function by using the pycodestyle_magic module
+Make sure you've the module pycodestyle and flake8 (`pip install pycodestyle flake8`) Then enable the magic function by using the pycodestyle_magic module
 
 `pip install pycodestyle_magic`
 
