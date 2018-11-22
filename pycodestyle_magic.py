@@ -81,7 +81,7 @@ def flake8(line, cell):
     logger.setLevel(logging.INFO)
     with tempfile.NamedTemporaryFile(mode='r+', delete=False) as f:
         # save to file
-        f.write(cell + '\n')
+        f.write(cell)
         # make sure it's written
         f.flush()
         f.close()
