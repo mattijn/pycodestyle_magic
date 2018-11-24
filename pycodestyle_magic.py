@@ -5,7 +5,7 @@ a=1
 should give an error about missing spaces
 """
 
-__version__ = '0.2.2'
+__version__ = '0.2.3'
 
 import sys
 import tempfile
