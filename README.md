@@ -14,6 +14,7 @@ Enable the magic function by using the pycodestyle_magic module in a cell
 `%load_ext pycodestyle_magic`
 
 and then use the function in your cell to check compliance with `pycodestyle` or `flake8` as such:
+
 `%%pycodestyle`
 
 or for `flake8`
