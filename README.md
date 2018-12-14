@@ -22,10 +22,10 @@ or for `flake8`
 `%%flake8`
 
 See notebooks in notebook directory for example use cases, as such:
-### Pycodestyle
+### Pycodestyle ([notebook](https://github.com/mattijn/pycodestyle_magic/blob/master/notebook/example%20pycodestyle_magic.ipynb))
 ![alt text](img/pycodestyle.PNG)
 
-### Flake8
+### Flake8 ([notebook](https://github.com/mattijn/pycodestyle_magic/blob/master/notebook/example%20flake8_magic.ipynb))
 ![alt text](img/flake8.PNG)
 
 Examples notebooks were slightly adapted from
