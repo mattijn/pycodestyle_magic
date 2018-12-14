@@ -5,8 +5,7 @@ Magic function for pycodestyle and flake8 module in Jupyter-Lab or Notebook
 Make sure you've the Python package pycodestyle, flake8 and this pycodestyle_magic.
 
 ```
-pip install pycodestyle flake8
-pip install pycodestyle_magic
+pip install pycodestyle flake8 pycodestyle_magic
 ```
 
 # usage
