@@ -87,6 +87,7 @@ def flake8(line, cell):
         f.close()
 
     flake = flake8_module.get_style_guide(extend_ignore=['W292',
+                                                         'W391',
                                                          'F401',
                                                          'F821'])
     # flake_result = flake.check_files([f.name])
