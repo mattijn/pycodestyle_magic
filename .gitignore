@@ -1,2 +1,5 @@
 *.pyc
 *.tar.gz
+
+# Jupyter Notebook
+.ipynb_checkpoints
