@@ -12,7 +12,7 @@ import logging
 from pycodestyle_magic import flake8
 
 
-class TestLinenumbers(unittest.TestCase):
+class TestFlake8CellMagic(unittest.TestCase):
     """Setup the tests, we want a logger."""
     def setUp(self):
         self.logger = logging.getLogger('pycodestyle')
