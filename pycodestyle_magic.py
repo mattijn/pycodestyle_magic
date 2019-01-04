@@ -102,7 +102,6 @@ def flake8(line, cell):
     with io.StringIO() as buf, redirect_stdout(buf):
         _ = flake.check_files([f.name])
         for line in buf.getvalue().splitlines():
-            print(line)#import pdb; pdb.set_trace()
             # on windows drive path also contains :
             temp_file, line, col, error = line.split(':')[-4:] 
             # add + 1 for line as first line is %%flake8, inc pre py3.6 string
