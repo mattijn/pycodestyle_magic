@@ -8,6 +8,20 @@ Make sure you've the Python package `pycodestyle`, `flake8` and this `pycodestyl
 pip install flake8 pycodestyle pycodestyle_magic
 ```
 
+# configuration
+
+Flake8 and pycodestyle will discover and manage user configuration files
+(stored in a user's home directory or in the XDG directory inside their home
+directory) or project configuration files (stored in the current directory).
+See their respective docs for specific details on configuration file naming,
+syntax, and location.
+
+Additionally, Flake8 cell magic ignores four codes by default:
+  * W292 - *no newline at end of file*; not relevant in an iPython cell
+  * W391 - *blank line at end of file*; not relevant in an iPython cell
+  * F401 - *module imported but unused*; a module may be imported in one cell and used in another
+  * F821 - *undefined name name*; a variable may be defined in one cell and used in another
+
 # usage
 Enable the magic function by using the pycodestyle_magic module in a cell
 
@@ -30,4 +44,3 @@ See notebooks in notebook directory for example use cases, as such:
 
 Examples notebooks were slightly adapted from
 https://github.com/SiggyF/notebooks/blob/master/styleguide.ipynb
-

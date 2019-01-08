@@ -86,7 +86,10 @@ def flake8(line, cell):
         f.flush()
         f.close()
 
-    flake = flake8_module.get_style_guide(ignore=['W292', 'F821', 'F401'])
+    flake = flake8_module.get_style_guide(extend_ignore=['W292',
+                                                         'W391',
+                                                         'F401',
+                                                         'F821'])
     # flake_result = flake.check_files([f.name])
     
     # # split lines
@@ -99,7 +102,6 @@ def flake8(line, cell):
     with io.StringIO() as buf, redirect_stdout(buf):
         _ = flake.check_files([f.name])
         for line in buf.getvalue().splitlines():
-            print(line)#import pdb; pdb.set_trace()
             # on windows drive path also contains :
             temp_file, line, col, error = line.split(':')[-4:] 
             # add + 1 for line as first line is %%flake8, inc pre py3.6 string
