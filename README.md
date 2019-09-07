@@ -27,7 +27,7 @@ Enable the magic function by using the pycodestyle_magic module in a cell
 
 `%load_ext pycodestyle_magic`
 
-### to check a cell once:
+## to check a cell once:
 use the function as first line in your cell to check compliance with `pycodestyle` or `flake8` as such:
 
 `%%pycodestyle`
@@ -36,7 +36,7 @@ or for `flake8`
 
 `%%flake8`
 
-### to auto check each cell (version >= 0.3):
+## to auto check each cell (version >= 0.3):
 If you want this compliance checking turned on by default for each cell then run this magic line function in an empty cell:
 
 `%pycodestyle_on`
