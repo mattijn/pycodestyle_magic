@@ -20,6 +20,8 @@ from IPython.core.magic import register_cell_magic
 from IPython.core.magic import register_line_magic
 
 vw = None
+init_pycodestyle = False
+init_flake8 = False
 
 class VarWatcher(object):
     def __init__(self, ip):
@@ -64,8 +66,12 @@ def unload_ipython_extension(ip, pck=False):
     # If you want your extension to be unloadable, put that logic here.
     if pck == 'flake8':
         ip.events.unregister('post_run_cell', vw.auto_run_flake8)
+        global init_flake8
+        init_flake8 = False
     if pck == 'pycodestyle':
         ip.events.unregister('post_run_cell', vw.auto_run_pycodestyle)
+        global init_pycodestyle
+        init_pycodestyle = False
     pass
 
 @register_line_magic
@@ -87,6 +93,10 @@ def pycodestyle_off(line):
 @register_cell_magic
 def pycodestyle(line, cell, auto=False):
     """pycodestyle cell magic for pep8"""
+    global init_pycodestyle
+    if init_pycodestyle == False:
+        init_pycodestyle = True
+        return    
         
     logger.setLevel(logging.INFO)
     # output is written to stdout
@@ -130,7 +140,11 @@ def pycodestyle(line, cell, auto=False):
 
 @register_cell_magic
 def flake8(line, cell, auto=False):
-    """flake8 cell magic""" 
+    """flake8 cell magic"""
+    global init_flake8
+    if init_flake8 == False:
+        init_flake8 = True
+        return
 
     logger.setLevel(logging.INFO)
     with tempfile.NamedTemporaryFile(mode='r+', delete=False) as f:
