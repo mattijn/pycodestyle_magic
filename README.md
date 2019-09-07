@@ -35,6 +35,20 @@ or for `flake8`
 
 `%%flake8`
 
+If you want this functionaly turned on by default for each cell then run:
+
+`%%pycodestye_on`
+
+or for `flake8`
+
+`%%flake8_on`
+
+To turn off the auto-checking for each cell use:
+
+`%%pycodestyle_off` or `%%flake8_off`
+
+If you have turned `on` the function multiple times you also will have to turn it `off` the same amount of times.
+
 See notebooks in notebook directory for example use cases, as such:
 ### Pycodestyle ([notebook](https://github.com/mattijn/pycodestyle_magic/blob/master/notebook/example%20pycodestyle_magic.ipynb))
 ![alt text](img/pycodestyle.PNG)
