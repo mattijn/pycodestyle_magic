@@ -36,7 +36,7 @@ or for `flake8`
 
 `%%flake8`
 
-### to auto check each cell:
+### to auto check each cell (version >= 0.3):
 If you want this compliance checking turned on by default for each cell then run this magic line function in an empty cell:
 
 `%pycodestyle_on`
