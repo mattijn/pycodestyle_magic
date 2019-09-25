@@ -5,7 +5,7 @@ a=1
 should give an error about missing spaces
 """
 
-__version__ = '0.3'
+__version__ = '0.4'
 
 import sys
 import tempfile
@@ -105,6 +105,8 @@ def pycodestyle(line, cell, auto=False):
     # temporary replace
     sys.stdout = io.StringIO()
     # store code in a file, todo unicode
+    if cell.startswith(('!', '%%', '%')):
+        return    
     with tempfile.NamedTemporaryFile(mode='r+',delete=False) as f:
         # save to file
         f.write('# The %%pycodestyle cell magic was here\n' + cell + '\n')
@@ -147,6 +149,8 @@ def flake8(line, cell, auto=False):
         return
 
     logger.setLevel(logging.INFO)
+    if cell.startswith(('!', '%%', '%')):
+        return
     with tempfile.NamedTemporaryFile(mode='r+', delete=False) as f:
         # save to file
         f.write(cell)

@@ -6,7 +6,7 @@ build-backend = "flit.buildapi"
 [tool.flit.metadata]
 module = "pycodestyle_magic"
 author = "Mattijn van Hoek"
-author-email = "hoek@hkv.nl"
+author-email = "mattijn@gmail.com"
 home-page = "https://github.com/mattijn/pycodestyle_magic"
 classifiers = ["License :: OSI Approved :: MIT License"]
 
