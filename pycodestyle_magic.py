@@ -1,27 +1,36 @@
 """
 magic function that checks a cell for pep8 compliance, using pycodestyle
-%%pycodestyle
+%pycodestyle_on
+or flake8
+%flake8_on
 a=1
 should give an error about missing spaces
 """
 
-__version__ = '0.4'
+__version__ = '0.5'
 
 import sys
 import tempfile
 import io
 import os
 import logging
+import copy
 import pycodestyle as pycodestyle_module
 from flake8.api import legacy as flake8_module
 from contextlib import redirect_stdout
 
 from IPython.core.magic import register_cell_magic
 from IPython.core.magic import register_line_magic
+from IPython.core import magic_arguments
 
 vw = None
 init_pycodestyle = False
 init_flake8 = False
+ignore_codes = ['W292', 'W391', 'F401', 'F821']
+ignore_codes_bak = copy.deepcopy(ignore_codes)
+max_line_length = 79
+max_line_length_bak = copy.deepcopy(max_line_length)
+
 
 class VarWatcher(object):
     def __init__(self, ip):
@@ -32,13 +41,12 @@ class VarWatcher(object):
         flake8(1, result.info.raw_cell, auto=True)
         if result.error_before_exec:
             print('Error before execution: %s' % result.error_before_exec)
-            
+
     def auto_run_pycodestyle(self, result):
         pycodestyle(1, result.info.raw_cell, auto=True)
         if result.error_before_exec:
-            print('Error before execution: %s' % result.error_before_exec)            
-            
-            
+            print('Error before execution: %s' % result.error_before_exec)
+
 
 logger = logging.getLogger('pycodestyle')
 if not logging.root.hasHandlers():
@@ -74,8 +82,47 @@ def unload_ipython_extension(ip, pck=False):
         init_pycodestyle = False
     pass
 
+@magic_arguments.magic_arguments()
+@magic_arguments.argument('--ignore','-i', help='ignore option, comma separated errors')
+@magic_arguments.argument('--max_line_length','-m', help='set the max line length')
 @register_line_magic
 def flake8_on(line):
+    """
+    Flake8 magic function
+
+    Parameters
+    ----------
+    --ignore, -i: errors
+        Single error to ignore or comma separeted for multiple (no spaces)
+        Example:  %flake8_on --ignore E265,E255
+    --max_line_length, -m: int
+        Maximal line length (default to 79)
+        Example: %flake8_on --max_line_length 119
+    """
+
+    # validate for any options
+    args = magic_arguments.parse_argstring(flake8_on, line)
+    # check ignore codes
+    global ignore_codes
+    global ignore_codes_bak  
+    ignore_codes = ignore_codes_bak  
+    if args.ignore:
+        ignore_codes = list(set(ignore_codes + args.ignore.split(',')))
+
+    # check max-line-length
+    global max_line_length
+    global max_line_length_bak  
+    max_line_length = max_line_length_bak
+    if args.max_line_length:
+        max_line_length = int(args.max_line_length)
+
+    # validate if function is already active, if so, do not register new `post_run_cell`
+    global init_flake8
+    if init_flake8 == False:
+        init_flake8 = True
+    else:
+        return          
+    
     load_ipython_extension(vw.shell, pck='flake8')
     
 @register_line_magic
@@ -126,7 +173,7 @@ def pycodestyle(line, cell, auto=False):
         #logger.info(line)     
         # on windows drive path also contains :
         line, col, error = line.split(':')[-4:] 
-        # only add + 1 for line for %%flake8, inc pre py3.6 string
+        # do not subtract 1 for line for %%pycodestyle, inc pre py3.6 string
         if auto:
             add = -1
         else:
@@ -143,6 +190,7 @@ def pycodestyle(line, cell, auto=False):
 @register_cell_magic
 def flake8(line, cell, auto=False):
     """flake8 cell magic"""
+
     global init_flake8
     if init_flake8 == False:
         init_flake8 = True
@@ -157,11 +205,13 @@ def flake8(line, cell, auto=False):
         # make sure it's written
         f.flush()
         f.close()
-
-    flake = flake8_module.get_style_guide(extend_ignore=['W292',
-                                                         'W391',
-                                                         'F401',
-                                                         'F821'])
+   
+    global ignore_codes    
+    global max_line_length
+    flake = flake8_module.get_style_guide(
+        extend_ignore=ignore_codes, 
+        max_line_length=max_line_length
+    )
   
     
     with io.StringIO() as buf, redirect_stdout(buf):
@@ -176,8 +226,5 @@ def flake8(line, cell, auto=False):
                 add = 1
             logger.info('{}:{}:{}'.format(int(line) + add, col, error))  
 
-    # try:
-        # os.remove(f.name)
-    # except OSError as e:  # if failed, report it back to the user
-        # logger.error("Error: %s - %s." % (e.filename, e.strerror))
     return
+
