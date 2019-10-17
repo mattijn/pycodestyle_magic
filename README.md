@@ -53,7 +53,6 @@ To turn off the auto-checking for each cell use:
 
 `%pycodestyle_off` or `%flake8_off`
 
-If you have turned `on` the function multiple times you also will have to turn it `off` the same amount of times.
 
 ## config options for `%flake8_on` (version >= 0.5)
 
