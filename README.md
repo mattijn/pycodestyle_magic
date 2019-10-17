@@ -53,6 +53,26 @@ To turn off the auto-checking for each cell use:
 
 If you have turned `on` the function multiple times you also will have to turn it `off` the same amount of times.
 
+## config options for `%flake8_on` (version >= 0.5)
+
+1. The option `--ignore` or `-i` will add the the named error(s) to the ignore list
+
+Example to ignore the errors `E225` and `E265`:
+```
+%flake8_on --ignore E225,E265
+``` 
+Remember to _avoid_ spaces between declaring multiple errors.
+
+2. With the option `--max_line_length` or `-m` the max-line-length can be customised.
+
+Example to set the line length to `119` characters instead of the default `79`:
+```
+%flake8_on --max_line_length 119
+```
+
+The options can be combined as well. 
+
+
 See notebooks in notebook directory for example use cases, as such:
 ### Pycodestyle ([notebook](https://github.com/mattijn/pycodestyle_magic/blob/master/notebook/example%20pycodestyle_magic.ipynb))
 ![alt text](img/pycodestyle.PNG)
