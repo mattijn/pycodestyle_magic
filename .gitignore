@@ -1,6 +1,8 @@
 *.pyc
 *.tar.gz
-
-# Jupyter Notebook
 .ipynb_checkpoints
 *.ipynb
+.DS_Store
+.pytest_cache/*
+dist/*
+dist
