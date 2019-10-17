@@ -1,3 +1,5 @@
+[![PyPI version](https://img.shields.io/pypi/v/pycodestyle_magic.svg)](https://pypi.org/project/pycodestyle_magic)
+
 # pycodestyle_magic
 Magic function for pycodestyle and flake8 module in Jupyter-Lab or Notebook
 
