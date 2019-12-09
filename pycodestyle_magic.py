@@ -127,23 +127,36 @@ def flake8_on(line):
     
 @register_line_magic
 def pycodestyle_on(line):
+    # validate if function is already active, if so, do not register new `post_run_cell`
+    global init_pycodestyle
+    if init_pycodestyle == False:
+        init_pycodestyle = True
+    else:
+        return    
+    
     load_ipython_extension(vw.shell, pck='pycodestyle')    
     
 @register_line_magic
 def flake8_off(line):
+    global init_flake8
+    init_flake8 = False     
     unload_ipython_extension(vw.shell, pck='flake8')
+   
     
 @register_line_magic
 def pycodestyle_off(line):
+    global init_pycodestyle
+    init_pycodestyle = False     
     unload_ipython_extension(vw.shell, pck='pycodestyle') 
+   
     
 @register_cell_magic
 def pycodestyle(line, cell, auto=False):
     """pycodestyle cell magic for pep8"""
-    global init_pycodestyle
-    if init_pycodestyle == False:
-        init_pycodestyle = True
-        return    
+#     global init_pycodestyle
+#     if init_pycodestyle == False:
+#         init_pycodestyle = True
+#         return    
         
     logger.setLevel(logging.INFO)
     # output is written to stdout
@@ -167,12 +180,14 @@ def pycodestyle(line, cell, auto=False):
     # check the filename
     pcs_result = pycodestyle.check_files(paths=[f.name])
     # split lines
-    stdout = sys.stdout.getvalue().splitlines()   
+    stdout = sys.stdout.getvalue().splitlines()  
     
     for line in stdout:
-        #logger.info(line)     
+        line_split = line.split(' ')
+        line, col, _ = line_split[0].split(':')[-3:]
+        error = ' '.join(line_split[1::])        
         # on windows drive path also contains :
-        line, col, error = line.split(':')[-4:] 
+        #line, col, error = line.split(':')[-4:] 
         # do not subtract 1 for line for %%pycodestyle, inc pre py3.6 string
         if auto:
             add = -1
@@ -191,10 +206,10 @@ def pycodestyle(line, cell, auto=False):
 def flake8(line, cell, auto=False):
     """flake8 cell magic"""
 
-    global init_flake8
-    if init_flake8 == False:
-        init_flake8 = True
-        return
+#     global init_flake8
+#     if init_flake8 == False:
+#         init_flake8 = True
+#         return
 
     logger.setLevel(logging.INFO)
     if cell.startswith(('!', '%%', '%')):
@@ -218,7 +233,10 @@ def flake8(line, cell, auto=False):
         _ = flake.check_files([f.name])
         for line in buf.getvalue().splitlines():
             # on windows drive path also contains :
-            temp_file, line, col, error = line.split(':')[-4:] 
+            # but the error als can contain a : 
+            line_split = line.split(' ')
+            line, col, _ = line_split[0].split(':')[-3:]
+            error = ' '.join(line_split[1::]) 
             # only add + 1 for line for %%flake8, inc pre py3.6 string
             if auto:
                 add = 0
