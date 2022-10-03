@@ -162,7 +162,8 @@ def pycodestyle(line, cell, auto=False):
         f.close()
     # now we can check the file by name.
     # we might be able to use 'stdin', have to check implementation
-    format = '%(row)d:%(col)d: %(code)s %(text)s'
+    format_divider = 'FORMAT_DIVIDER'
+    format = format_divider+'%(row)d'+format_divider+'%(col)d'+format_divider+' %(code)s %(text)s'
     pycodestyle = pycodestyle_module.StyleGuide(format=format)
     # check the filename
     pcs_result = pycodestyle.check_files(paths=[f.name])
@@ -171,8 +172,7 @@ def pycodestyle(line, cell, auto=False):
     
     for line in stdout:
         #logger.info(line)     
-        # on windows drive path also contains :
-        line, col, error = line.split(':')[-4:] 
+        line, col, error = line.split(format_divider,4)[1:]
         # do not subtract 1 for line for %%pycodestyle, inc pre py3.6 string
         if auto:
             add = -1
